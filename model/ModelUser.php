@@ -9,6 +9,9 @@
 class ModelUser
 {
 
+    /**
+     * @var PDO
+     */
     protected $db;
 
     /**
@@ -24,6 +27,10 @@ class ModelUser
         }
     }
 
+    /**
+     * @param User $user
+     * @return bool
+     */
     public function saveUser(User $user)
     {
         try {
@@ -42,6 +49,10 @@ class ModelUser
         }
     }
 
+    /**
+     * @param $login
+     * @return bool
+     */
     public function checkIfUserExist($login)
     {
         try {
@@ -65,6 +76,10 @@ class ModelUser
         }
     }
 
+    /**
+     * @param User $user
+     * @return bool|User
+     */
     public function verifyPassword(User $user)
     {
         try {
@@ -91,6 +106,9 @@ class ModelUser
         }
     }
 
+    /**
+     * @return array
+     */
     public function getUserInfo()
     {
         try {

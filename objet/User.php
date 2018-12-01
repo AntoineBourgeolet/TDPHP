@@ -8,8 +8,20 @@
 
 class User
 {
+    /**
+     * @var
+     */
+    /**
+     * @var
+     */
+    /**
+     * @var
+     */
     protected $login, $password, $email;
 
+    /**
+     * @var
+     */
     protected $id;
 
     /**
@@ -80,30 +92,33 @@ class User
     //Return false si aucun champ n'est vide
     //Return true si un champ est vide
 
+    /**
+     * @return bool
+     */
     public function emptyVerif()
     {
-        if (empty($this->getLogin()) || empty($this->getPassword()) || empty($this->getEmail()))
-        {
+        if (empty($this->getLogin()) || empty($this->getPassword()) || empty($this->getEmail())) {
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
 
+    /**
+     * @return bool
+     */
     public function emptyVerifLogin()
     {
-        if (empty($this->getLogin()) || empty($this->getPassword()))
-        {
+        if (empty($this->getLogin()) || empty($this->getPassword())) {
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
 
+    /**
+     *
+     */
     public function resetall()
     {
         $this->setId("");

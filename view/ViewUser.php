@@ -9,6 +9,9 @@
 class ViewUser
 {
 
+    /**
+     * @var ModelUser
+     */
     protected $model;
 
     /**
@@ -20,18 +23,26 @@ class ViewUser
     }
 
 
-
+    /**
+     *
+     */
     public function displayNewUser()
     {
         $file = file_get_contents('template/newUser.html', FILE_USE_INCLUDE_PATH);
         echo $file;
     }
 
+    /**
+     *
+     */
     public function displayEmptyNewUser()
     {
         echo "Veuillez remplir tout les champs";
     }
 
+    /**
+     * @param $Login
+     */
     public function displayNewUserSuccess($Login)
     {
         $file = file_get_contents('template/successNewUser.html', FILE_USE_INCLUDE_PATH);
@@ -41,45 +52,65 @@ class ViewUser
         echo $file;
     }
 
+    /**
+     *
+     */
     public function displayErreurNewUser()
     {
         echo "Impossible d'enrigistrer dans la base";
     }
 
+    /**
+     *
+     */
     public function displayExistingNewUser()
     {
         echo "Cette utilisateur existe déjà";
     }
 
+    /**
+     *
+     */
     public function displayLogin()
     {
         $file = file_get_contents('template/login.html', FILE_USE_INCLUDE_PATH);
         echo $file;
     }
 
+    /**
+     *
+     */
     public function displayEmptyLogin()
     {
         echo "Veuillez remplir tout les champs";
     }
 
+    /**
+     *
+     */
     public function displayIncorectLogin()
     {
         echo "Identifiant ou mot de passe incorect";
     }
 
+    /**
+     *
+     */
     public function displayNewAnnonce()
     {
         header('location: index.php?page=newannonce');
     }
 
+    /**
+     *
+     */
     public function diplayListUser()
     {
         $file = file_get_contents('template/listUser.html', FILE_USE_INCLUDE_PATH);
 
         $userArray = $this->model->getUserInfo();
         $blockUser = "";
-        for($i = 0; $i < count($userArray); $i++)
-        {
+        for ($i = 0; $i < count($userArray); $i++) {
             $fileannonce = file_get_contents('template/blockListUser.html', FILE_USE_INCLUDE_PATH);
             $fileannonce = str_replace('{{login}}', $userArray[$i]->getLogin(), $fileannonce);
             $fileannonce = str_replace('{{email}}', $userArray[$i]->getEmail(), $fileannonce);

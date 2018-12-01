@@ -12,10 +12,19 @@ include "objet/User.php";
 
 class ControllerUser
 {
+    /**
+     * @var ModelUser
+     */
     protected $model;
 
+    /**
+     * @var ViewUser
+     */
     protected $view;
 
+    /**
+     * @var User
+     */
     protected $user;
 
     /**
@@ -29,105 +38,110 @@ class ControllerUser
     }
 
 
-
+    /**
+     *  traitementNewUser
+     */
     public function traitementNewUser()
     {
-        if(isset($_POST['login']))
-        {
+        if (isset($_POST['login'])) {
             $this->user->setLogin($this->is_string($_POST['login']));
             $this->user->setPassword($this->is_password($_POST['password']));
             $this->user->setEmail($this->is_email($_POST['email']));
-            if ($this->user->emptyVerif() == false)
-            {
+            if ($this->user->emptyVerif() == false) {
                 $this->view->displayEmptyNewUser();
                 $this->view->displayNewUser();
-            }
-            else
-            {
-                if($this->model->checkIfUserExist($this->user->getLogin()) == false)
-                {
+            } else {
+                if ($this->model->checkIfUserExist($this->user->getLogin()) == false) {
                     $testResultat = $this->model->saveUser($this->user);
-                    if ($testResultat == true)
-                    {
+                    if ($testResultat == true) {
                         $this->view->displayNewUserSuccess($this->user->getLogin());
-                    }
-                    else
-                    {
+                    } else {
                         $this->view->displayErreurNewUser();
                         $this->view->displayNewUser();
                     }
-                }
-                else
-                {
+                } else {
                     $this->view->displayExistingNewUser();
                     $this->view->displayNewUser();
                 }
             }
-        }
-        else
-        {
+        } else {
             $this->view->displayNewUser();
         }
     }
 
+    /**
+     *  traitementLogin
+     */
     public function traitementLogin()
     {
-        if(isset($_POST['login']))
-        {
+        if (isset($_POST['login'])) {
             $this->user->setLogin($this->is_string($_POST['login']));
             $this->user->setPassword($this->is_password($_POST['password']));
-            if ($this->user->emptyVerifLogin() == false)
-            {
+            if ($this->user->emptyVerifLogin() == false) {
                 $this->view->displayEmptyLogin();
                 $this->view->displayLogin();
-            }
-            else
-            {
-                if($user = $this->model->verifyPassword($this->user)->getLogin() != "")
-                {
+            } else {
+                if ($user = $this->model->verifyPassword($this->user)->getLogin() != "") {
                     session_unset();
                     $_SESSION['user'] = $this->user;
                     $this->view->displayNewAnnonce();
-                }
-                else
-                {
+                } else {
                     $this->view->displayIncorectLogin();
                     $this->view->displayLogin();
                 }
             }
-        }
-        else
-        {
+        } else {
             $this->view->displayLogin();
         }
     }
 
+    /**
+     *  displayNewUser
+     */
     public function displayNewUser()
     {
         $this->view->displayNewUser();
     }
 
+    /**
+     *  displayLogin
+     */
     public function displayLogin()
     {
         $this->view->displayLogin();
     }
 
 
+    /**
+     *  displayUserList
+     */
     public function displayUserList()
     {
         $this->view->diplayListUser();
     }
 
+    /**
+     * @param $value
+     * @return string
+     */
     private function is_string($value)
     {
         return (is_string($value)) ? $value : "";
     }
 
+    /**
+     * @param $value
+     * @return string
+     */
     private function is_email($value)
     {
         return (filter_var($value, FILTER_VALIDATE_EMAIL) ? $value : "");
     }
 
+    /**
+     * @param $value
+     * @return string
+     */
     private function is_password($value)
     {
         //IMPOSIBLE D'UTILISER PASSWORD HASH A CAUSE DE LA LIMITE DE 40 CARACTERE EN BDD

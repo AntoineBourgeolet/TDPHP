@@ -9,7 +9,7 @@
 class Annonce
 {
     /** STRING
-     * @var $titre, $contenu, $date
+     * @var $titre , $contenu, $date
      */
 
     protected $titre, $contenu, $date;
@@ -32,7 +32,7 @@ class Annonce
 
 
     /** INTEGER
-     * @var $id;
+     * @var $id ;
      */
     protected $id, $id_author;
 
@@ -69,7 +69,6 @@ class Annonce
     }
 
 
-
     /**
      * @return mixed
      */
@@ -101,8 +100,6 @@ class Annonce
     {
         $this->contenu = $contenu;
     }
-
-
 
 
 }

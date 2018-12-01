@@ -9,46 +9,52 @@
 class ModelAnnonce
 {
 
+    /**
+     * @var PDO
+     */
     protected $db;
+
     /**
      * ModelAnnonce constructor.
      */
     public function __construct()
     {
-        try
-        {
-            $this->db = new PDO('mysql:host=localhost;dbname=phptd', 'root', '',array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
-        }
-        catch(Exception $e)
-        {
+        try {
+            $this->db = new PDO('mysql:host=localhost;dbname=phptd', 'root', '', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+        } catch (Exception $e) {
             echo 'Echec de la connexion à la base de données';
             exit();
         }
     }
 
+    /**
+     * @param Annonce $annonce
+     * @return bool
+     */
     public function saveAnnonce(Annonce $annonce)
     {
-        try{
+        try {
             $this->db->beginTransaction();
 
             $requete_prepare = $this->db->prepare('INSERT INTO annonce (title, content, date, author_id) VALUES (?,?,NOW(),?)');
 
-            $testErreur = $requete_prepare->execute(array($annonce->getTitre(),$annonce->getContenu(),$annonce->getIdAuthor() ));
+            $testErreur = $requete_prepare->execute(array($annonce->getTitre(), $annonce->getContenu(), $annonce->getIdAuthor()));
 
             $this->db->commit();
 
             return $testErreur;
 
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return false;
         }
     }
 
+    /**
+     * @return array|Exception
+     */
     public function getAnnonce()
     {
-        try{
+        try {
             $this->db->beginTransaction();
 
             $requete_prepare = $this->db->prepare('SELECT * FROM annonce');
@@ -57,8 +63,7 @@ class ModelAnnonce
 
             $annonceAll = array();
 
-            for($i=0; $i < $requete_prepare->rowCount(); $i++)
-            {
+            for ($i = 0; $i < $requete_prepare->rowCount(); $i++) {
                 $annonce = new Annonce();
                 $requete_result = $requete_prepare->fetch();
                 $annonce->setId($requete_result[0]);
@@ -72,16 +77,18 @@ class ModelAnnonce
 
             return $annonceAll;
 
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return $e;
         }
     }
 
+    /**
+     * @param string $login
+     * @return int
+     */
     public function getIdFromLogin(string $login)
     {
-        try{
+        try {
             $this->db->beginTransaction();
 
             $requete_prepare = $this->db->prepare('SELECT id FROM utilisateur WHERE login=? ');
@@ -92,16 +99,18 @@ class ModelAnnonce
 
             return $requete_prepare->fetch()[0];
 
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return 0;
         }
     }
 
+    /**
+     * @param $iduser
+     * @return array|Exception
+     */
     public function getAnnonceFromUser($iduser)
     {
-        try{
+        try {
             $this->db->beginTransaction();
 
             $requete_prepare = $this->db->prepare('SELECT * FROM annonce WHERE author_id = ?');
@@ -110,8 +119,7 @@ class ModelAnnonce
 
             $annonceAll = array();
 
-            for($i=0; $i < $requete_prepare->rowCount(); $i++)
-            {
+            for ($i = 0; $i < $requete_prepare->rowCount(); $i++) {
                 $annonce = new Annonce();
                 $requete_result = $requete_prepare->fetch();
                 $annonce->setId($requete_result[0]);
@@ -125,9 +133,7 @@ class ModelAnnonce
 
             return $annonceAll;
 
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return $e;
         }
     }
