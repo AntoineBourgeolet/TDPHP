@@ -45,4 +45,37 @@ class ModelAnnonce
             return false;
         }
     }
+
+    public function getAnnonce()
+    {
+        try{
+            $this->db->beginTransaction();
+
+            $requete_prepare = $this->db->prepare('SELECT * FROM annonce');
+
+            $requete_prepare->execute();
+
+            $annonceAll = array();
+
+            for($i=0; $i < $requete_prepare->rowCount(); $i++)
+            {
+                $annonce = new Annonce();
+                $requete_result = $requete_prepare->fetch();
+                $annonce->setId($requete_result[0]);
+                $annonce->setTitre($requete_result[1]);
+                $annonce->setContenu($requete_result[2]);
+                $annonce->setDate($requete_result[3]);
+                $annonceAll[$i] = $annonce;
+            }
+
+            $this->db->commit();
+
+            return $annonceAll;
+
+        }
+        catch (Exception $e)
+        {
+            return $e;
+        }
+    }
 }

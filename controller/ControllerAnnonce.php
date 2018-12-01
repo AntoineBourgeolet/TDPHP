@@ -32,17 +32,26 @@ class ControllerAnnonce
             $annonce->setTitre($this->is_string($_POST['titre']));
             $annonce->setContenu($this->is_string($_POST['contenu']));
 
-            $model = new ModelAnnonce();
-            $testResultat = $model->saveAnnonce($annonce);
-
             $view = new ViewAnnonce();
-            if($testResultat)
+
+            if (empty($annonce->getTitre()) || empty($annonce->getContenu()))
             {
-                $view->displayAnnonce();
+                $view->displayEmptyNewAnnonce();
+                $view->displayNewAnnonce();
             }
             else
             {
-                $view->displayErreurNewAnnonce();
+                $model = new ModelAnnonce();
+                $testResultat = $model->saveAnnonce($annonce);
+
+                if($testResultat)
+                {
+                    $view->displayAnnonceSuccess($annonce->getTitre());
+                }
+                else
+                {
+                    $view->displayErreurNewAnnonce();
+                }
             }
         }
         else
