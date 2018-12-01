@@ -1,13 +1,14 @@
 <?php
 include 'controller/ControllerAnnonce.php';
+include 'controller/ControllerUser.php';
 
-
-//Si j'ai une page demandée ($_GET['page'])
-//Je verifie que cette page existe
-//j'appel le traitement concerné
-//sinon
-//on renvoi vers register.html
+//Initialise controllers
 $ControllerAnnonce = new ControllerAnnonce();
+$ControllerUser = new ControllerUser();
+
+//Start Session
+session_start();
+
 
 if (isset($_GET['page'])) {
     switch ($_GET['page']) {
@@ -17,6 +18,26 @@ if (isset($_GET['page'])) {
             break;
         case 'traitementnewannonce':
             $ControllerAnnonce->traitementNewAnnonce();
+            return;
+            break;
+        case 'newuser':
+            $ControllerUser->displayNewUser();
+            return;
+            break;
+        case 'traitementnewuser':
+            $ControllerUser->traitementNewUser();
+            return;
+            break;
+        case 'login':
+            $ControllerUser->displayLogin();
+            return;
+            break;
+        case 'traitementlogin':
+            $ControllerUser->traitementLogin();
+            return;
+            break;
+        case 'traitementdeconnexion':
+            session_destroy();
             return;
             break;
     }

@@ -12,52 +12,64 @@ include "objet/Annonce.php";
 
 class ControllerAnnonce
 {
+    protected $model;
+
+    protected $view;
+
+    protected $annonce;
+
+    /**
+     * ControllerAnnonce constructor.
+     */
+    public function __construct()
+    {
+        $this->model = new ModelAnnonce();
+        $this->view = new ViewAnnonce();
+        $this->annonce = new Annonce();
+    }
+
+
     public function displayNewAnnonce()
     {
-        $view = new ViewAnnonce();
-        $view->displayNewAnnonce();
+        $this->view->displayNewAnnonce();
     }
 
     public function displayAnnonce()
     {
-        $view = new ViewAnnonce();
-        $view->displayAnnonce();
+        $this->view->displayAnnonce();
     }
 
     public function traitementNewAnnonce()
     {
         if(isset($_POST['titre']))
         {
-            $annonce = new Annonce();
-            $annonce->setTitre($this->is_string($_POST['titre']));
-            $annonce->setContenu($this->is_string($_POST['contenu']));
+            $this->annonce->setTitre($this->is_string($_POST['titre']));
+            $this->annonce->setContenu($this->is_string($_POST['contenu']));
+            $this->annonce->setIdAuthor($this->is_id($_POST['iduser']));
 
-            $view = new ViewAnnonce();
-
-            if (empty($annonce->getTitre()) || empty($annonce->getContenu()))
+            if (empty($this->annonce->getTitre()) || empty($this->annonce->getContenu()))
             {
-                $view->displayEmptyNewAnnonce();
-                $view->displayNewAnnonce();
+                $this->view->displayEmptyNewAnnonce();
+                $this->view->displayNewAnnonce();
             }
             else
             {
-                $model = new ModelAnnonce();
-                $testResultat = $model->saveAnnonce($annonce);
+                $testResultat = $this->model->saveAnnonce($this->annonce);
 
                 if($testResultat)
                 {
-                    $view->displayAnnonceSuccess($annonce->getTitre());
+                    $this->view->displayAnnonceSuccess($this->annonce->getTitre());
                 }
                 else
                 {
-                    $view->displayErreurNewAnnonce();
+                    $this->view->displayErreurNewAnnonce();
+                    $this->view->displayNewAnnonce();
                 }
             }
         }
         else
         {
-            $view = new ViewAnnonce();
-            $view->displayNewAnnonce();
+            $this->view->displayNewAnnonce();
         }
 
 
@@ -68,5 +80,9 @@ class ControllerAnnonce
         return (is_string($value)) ? $value : "";
     }
 
+    private function is_id($value)
+    {
+        return (is_numeric($value)) ? $value : intval($this->model->getIdFromLogin("anonymous"));
+    }
 
 }

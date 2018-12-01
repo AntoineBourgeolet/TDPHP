@@ -9,7 +9,7 @@
 class ModelAnnonce
 {
 
-
+    protected $db;
     /**
      * ModelAnnonce constructor.
      */
@@ -31,9 +31,9 @@ class ModelAnnonce
         try{
             $this->db->beginTransaction();
 
-            $requete_prepare = $this->db->prepare('INSERT INTO annonce (title, content, date) VALUES (?,?,NOW())');
+            $requete_prepare = $this->db->prepare('INSERT INTO annonce (title, content, date, author_id) VALUES (?,?,NOW(),?)');
 
-            $testErreur = $requete_prepare->execute(array($annonce->getTitre(),$annonce->getContenu()));
+            $testErreur = $requete_prepare->execute(array($annonce->getTitre(),$annonce->getContenu(),$annonce->getIdAuthor() ));
 
             $this->db->commit();
 
@@ -76,6 +76,26 @@ class ModelAnnonce
         catch (Exception $e)
         {
             return $e;
+        }
+    }
+
+    public function getIdFromLogin(string $login)
+    {
+        try{
+            $this->db->beginTransaction();
+
+            $requete_prepare = $this->db->prepare('SELECT id FROM utilisateur WHERE login=? ');
+
+            $requete_prepare->execute(array($login));
+
+            $this->db->commit();
+
+            return $requete_prepare->fetch();
+
+        }
+        catch (Exception $e)
+        {
+            return 0;
         }
     }
 }

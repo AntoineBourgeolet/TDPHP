@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New user</title>
+</head>
+<body>
+<form action="index.php?page=traitementnewuser" method="post">
+    <label for="login">Login :</label>
+    <input type="text" id="login" name="login" required>
+    <label for="password">Mot de passe :</label>
+    <input type="password" id="password" name="password" pattern='.{3,40}' title='Min 3 - Max 40 caractéres' required>
+    <label for="email">Email :</label>
+    <input type="text" id="email" name="email" required>
+    <button type="submit">Envoyer</button>
+</form>
+</body>
+</html>

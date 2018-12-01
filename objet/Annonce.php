@@ -14,11 +14,27 @@ class Annonce
 
     protected $titre, $contenu, $date;
 
+    /**
+     * @return mixed
+     */
+    public function getIdAuthor()
+    {
+        return $this->id_author;
+    }
+
+    /**
+     * @param mixed $id_author
+     */
+    public function setIdAuthor($id_author)
+    {
+        $this->id_author = $id_author;
+    }
+
 
     /** INTEGER
      * @var $id;
      */
-    protected $id;
+    protected $id, $id_author;
 
     /**
      * @return mixed

@@ -9,9 +9,29 @@
 class ViewAnnonce
 {
 
+    protected $model;
+
+    /**
+     * ViewAnnonce constructor.
+     */
+    public function __construct()
+    {
+        $this->model = new ModelAnnonce();
+    }
+
+
     public function displayNewAnnonce()
     {
         $file = file_get_contents('template/newAnnonce.html', FILE_USE_INCLUDE_PATH);
+
+        if(isset($_SESSION['user']))
+        {
+            $file = str_replace("{{iduser}}", $_SESSION['user']->getId(), $file);
+        }
+        else
+        {
+            $file = str_replace("{{iduser}}","", $file);
+        }
         echo $file;
     }
 
@@ -20,18 +40,17 @@ class ViewAnnonce
      */
     public function displayAnnonce()
     {
-        $file = file_get_contents('template/Annonce.html', FILE_USE_INCLUDE_PATH);
+        $file = file_get_contents('template/annonce.html', FILE_USE_INCLUDE_PATH);
 
-        $model = new ModelAnnonce();
-        $annonce = $model->getAnnonce();
+        $annonceArray = $this->model->getAnnonce();
         $blockAnnonce = "";
-        for($i = 0; $i < count($annonce); $i++)
+        for($i = 0; $i < count($annonceArray); $i++)
         {
             $fileannonce = file_get_contents('template/blockAnnonce.html', FILE_USE_INCLUDE_PATH);
-            $fileannonce = str_replace('{{titreannonce}}', $annonce[$i]->getTitre(), $fileannonce);
-            $fileannonce = str_replace('{{contenuannonce}}', $annonce[$i]->getContenu(), $fileannonce);
-            $fileannonce = str_replace('{{idannonce}}', $annonce[$i]->getId(), $fileannonce);
-            $fileannonce = str_replace('{{dateannonce}}', $annonce[$i]->getDate(), $fileannonce);
+            $fileannonce = str_replace('{{titreannonce}}', $annonceArray[$i]->getTitre(), $fileannonce);
+            $fileannonce = str_replace('{{contenuannonce}}', $annonceArray[$i]->getContenu(), $fileannonce);
+            $fileannonce = str_replace('{{idannonce}}', $annonceArray[$i]->getId(), $fileannonce);
+            $fileannonce = str_replace('{{dateannonce}}', $annonceArray[$i]->getDate(), $fileannonce);
             $blockAnnonce .= $fileannonce;
         }
         $file = str_replace('{{annonce}}', $blockAnnonce, $file);
