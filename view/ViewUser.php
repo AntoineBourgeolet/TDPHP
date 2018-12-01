@@ -9,6 +9,18 @@
 class ViewUser
 {
 
+    protected $model;
+
+    /**
+     * ViewAnnonce constructor.
+     */
+    public function __construct()
+    {
+        $this->model = new ModelUser();
+    }
+
+
+
     public function displayNewUser()
     {
         $file = file_get_contents('template/newUser.html', FILE_USE_INCLUDE_PATH);
@@ -58,5 +70,22 @@ class ViewUser
     public function displayNewAnnonce()
     {
         header('location: index.php?page=newannonce');
+    }
+
+    public function diplayListUser()
+    {
+        $file = file_get_contents('template/listUser.html', FILE_USE_INCLUDE_PATH);
+
+        $userArray = $this->model->getUserInfo();
+        $blockUser = "";
+        for($i = 0; $i < count($userArray); $i++)
+        {
+            $fileannonce = file_get_contents('template/blockListUser.html', FILE_USE_INCLUDE_PATH);
+            $fileannonce = str_replace('{{login}}', $userArray[$i]->getLogin(), $fileannonce);
+            $fileannonce = str_replace('{{email}}', $userArray[$i]->getEmail(), $fileannonce);
+            $blockUser .= $fileannonce;
+        }
+        $file = str_replace('{{userlistblock}}', $blockUser, $file);
+        echo $file;
     }
 }

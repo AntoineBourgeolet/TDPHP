@@ -2,16 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Annonce</title>
+    <title>Nouvelle annonce</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
-<body>
+<body class="container">
+<h1 class="text-center">Nouvelle annonce</h1>
+
 <form action="index.php?page=traitementnewannonce" method="post">
-    <label for="titre">Titre :</label>
-    <input type="text" id="titre" name="titre">
-    <label for="contenu">Contenu :</label>
-    <input type="text" id="contenu" name="contenu">
+    <div class="form-group">
+        <label for="titre">Titre :</label>
+        <input class="form-control" type="text" id="titre" name="titre">
+    </div>
+    <div class="form-group">
+        <label for="contenu">Contenu :</label>
+        <input class="form-control" type="text" id="contenu" name="contenu">
+    </div>
+
     <input type="hidden" name="iduser" id='iduser' value="{{iduser}}">
-    <button type="submit">Envoyer</button>
+    <button type="submit" class="btn btn-block btn-primary">Envoyer</button>
 </form>
 </body>
 </html>

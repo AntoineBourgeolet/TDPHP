@@ -47,7 +47,6 @@ class ControllerUser
                 if($this->model->checkIfUserExist($this->user->getLogin()) == false)
                 {
                     $testResultat = $this->model->saveUser($this->user);
-
                     if ($testResultat == true)
                     {
                         $this->view->displayNewUserSuccess($this->user->getLogin());
@@ -86,6 +85,7 @@ class ControllerUser
             {
                 if($user = $this->model->verifyPassword($this->user)->getLogin() != "")
                 {
+                    session_unset();
                     $_SESSION['user'] = $this->user;
                     $this->view->displayNewAnnonce();
                 }
@@ -112,6 +112,12 @@ class ControllerUser
         $this->view->displayLogin();
     }
 
+
+    public function displayUserList()
+    {
+        $this->view->diplayListUser();
+    }
+
     private function is_string($value)
     {
         return (is_string($value)) ? $value : "";
@@ -127,4 +133,5 @@ class ControllerUser
         //IMPOSIBLE D'UTILISER PASSWORD HASH A CAUSE DE LA LIMITE DE 40 CARACTERE EN BDD
         return (is_string($value) AND strlen($value) <= 40) ? $value : "";
     }
+
 }

@@ -8,8 +8,6 @@ $ControllerUser = new ControllerUser();
 
 //Start Session
 session_start();
-
-
 if (isset($_GET['page'])) {
     switch ($_GET['page']) {
         case 'newannonce':
@@ -37,12 +35,20 @@ if (isset($_GET['page'])) {
             return;
             break;
         case 'traitementdeconnexion':
-            session_destroy();
+            session_unset();
+            $ControllerAnnonce->displayAnnonce();
+            return;
+            break;
+        case 'userannonce':
+            if (isset($_GET['utilisateur'])) {
+                $ControllerAnnonce->displayAnnonceFromUser($_GET['utilisateur']);
+            } else {
+                $ControllerUser->displayUserList();
+            }
             return;
             break;
     }
-}
-else {
+} else {
     $ControllerAnnonce->displayAnnonce();
 }
 

@@ -71,8 +71,15 @@ class ControllerAnnonce
         {
             $this->view->displayNewAnnonce();
         }
+    }
 
-
+    public function displayAnnonceFromUser($iduser)
+    {
+        if (is_numeric($iduser) != true)
+        {
+            $iduser = intval($this->model->getIdFromLogin($iduser));
+        }
+        $this->view->displayAnnonceFromUser($iduser);
     }
 
     private function is_string($value)
@@ -84,5 +91,4 @@ class ControllerAnnonce
     {
         return (is_numeric($value)) ? $value : intval($this->model->getIdFromLogin("anonymous"));
     }
-
 }

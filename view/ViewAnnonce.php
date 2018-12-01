@@ -74,4 +74,23 @@ class ViewAnnonce
     {
         echo "Veuillez remplir tout les champs";
     }
+
+    public function displayAnnonceFromUser($iduser)
+    {
+        $file = file_get_contents('template/annonce.html', FILE_USE_INCLUDE_PATH);
+
+        $annonceArray = $this->model->getAnnonceFromUser($iduser);
+        $blockAnnonce = "";
+        for($i = 0; $i < count($annonceArray); $i++)
+        {
+            $fileannonce = file_get_contents('template/blockAnnonce.html', FILE_USE_INCLUDE_PATH);
+            $fileannonce = str_replace('{{titreannonce}}', $annonceArray[$i]->getTitre(), $fileannonce);
+            $fileannonce = str_replace('{{contenuannonce}}', $annonceArray[$i]->getContenu(), $fileannonce);
+            $fileannonce = str_replace('{{idannonce}}', $annonceArray[$i]->getId(), $fileannonce);
+            $fileannonce = str_replace('{{dateannonce}}', $annonceArray[$i]->getDate(), $fileannonce);
+            $blockAnnonce .= $fileannonce;
+        }
+        $file = str_replace('{{annonce}}', $blockAnnonce, $file);
+        echo $file;
+    }
 }

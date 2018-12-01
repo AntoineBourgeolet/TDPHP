@@ -90,12 +90,45 @@ class ModelAnnonce
 
             $this->db->commit();
 
-            return $requete_prepare->fetch();
+            return $requete_prepare->fetch()[0];
 
         }
         catch (Exception $e)
         {
             return 0;
+        }
+    }
+
+    public function getAnnonceFromUser($iduser)
+    {
+        try{
+            $this->db->beginTransaction();
+
+            $requete_prepare = $this->db->prepare('SELECT * FROM annonce WHERE author_id = ?');
+
+            $requete_prepare->execute(array($iduser));
+
+            $annonceAll = array();
+
+            for($i=0; $i < $requete_prepare->rowCount(); $i++)
+            {
+                $annonce = new Annonce();
+                $requete_result = $requete_prepare->fetch();
+                $annonce->setId($requete_result[0]);
+                $annonce->setTitre($requete_result[1]);
+                $annonce->setContenu($requete_result[2]);
+                $annonce->setDate($requete_result[3]);
+                $annonceAll[$i] = $annonce;
+            }
+
+            $this->db->commit();
+
+            return $annonceAll;
+
+        }
+        catch (Exception $e)
+        {
+            return $e;
         }
     }
 }
